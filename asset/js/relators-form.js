@@ -1,7 +1,7 @@
 var valueTriggerIndex = 0;
 $(document).on('o:prepare-value', function(event, type, value, valueObj, namePrefix) {
   // check if contributor and check if already has relator selector (because of resource type will duplicate)
-  if ((value.data('data-term') == 'dcterms:contributor') && (!$(value).find('.relator-selector').length)) {
+  if (((value.data('data-term') == 'dcterms:contributor') || (value.data('term') == 'dcterms:contributor')) && (!$(value).find('.relator-selector').length)) {
     ++valueTriggerIndex;
     // create template for the first
     if (valueTriggerIndex == 1) {
