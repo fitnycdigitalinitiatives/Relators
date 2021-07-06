@@ -178,7 +178,7 @@ class Module extends AbstractModule
             if ($response->getContent()) {
                 foreach ($response->getContent() as $relators) {
                     if ($relators->property()->id() == $value->property()->id()) {
-                        if (($value->value() == $relators->valueMatch()) && ($value->uri() == $relators->uriMatch())) {
+                        if (($value->value() == $relators->valueMatch()) && ($value->uri() == $relators->uriMatch()) && ($value->valueResource() == $relators->valueResourceMatch())) {
                             $params = $event->getParams();
                             $html = $params['html'];
                             if ($relators->values()) {
