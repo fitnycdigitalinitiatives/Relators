@@ -56,34 +56,73 @@ class Module extends AbstractModule
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
-        // Add the "has_markers" filter to item search.
+        // Add the "has_markers" filter to resource search.
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.search.query',
             [$this, 'handleApiSearchQuery']
         );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemSetAdapter',
+            'api.search.query',
+            [$this, 'handleApiSearchQuery']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\MediaAdapter',
+            'api.search.query',
+            [$this, 'handleApiSearchQuery']
+        );
+
         // Add the Relators term definition.
         $sharedEventManager->attach(
             '*',
             'api.context',
             [$this, 'filterApiContext']
         );
+
+        // Add relators to json output for resources.
         $sharedEventManager->attach(
             'Omeka\Api\Representation\ItemRepresentation',
             'rep.resource.json',
             [$this, 'filterJsonLd']
         );
         $sharedEventManager->attach(
+            'Omeka\Api\Representation\ItemSetRepresentation',
+            'rep.resource.json',
+            [$this, 'filterJsonLd']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Representation\MediaRepresentation',
+            'rep.resource.json',
+            [$this, 'filterJsonLd']
+        );
+
+        // Add relators to value output
+        $sharedEventManager->attach(
             'Omeka\Api\Representation\ValueRepresentation',
             'rep.value.html',
             [$this, 'repValueHtml'],
             -1
         );
+
+        // Hydrate relator values
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.hydrate.post',
             [$this, 'handleRelators']
         );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemSetAdapter',
+            'api.hydrate.post',
+            [$this, 'handleRelators']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\MediaAdapter',
+            'api.hydrate.post',
+            [$this, 'handleRelators']
+        );
+
+        // Add relators to forms
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.add.form.after',
@@ -91,6 +130,26 @@ class Module extends AbstractModule
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
+            'view.edit.form.after',
+            [$this, 'handleViewFormAfter']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\ItemSet',
+            'view.add.form.after',
+            [$this, 'handleViewFormAfter']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\ItemSet',
+            'view.edit.form.after',
+            [$this, 'handleViewFormAfter']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Media',
+            'view.add.form.after',
+            [$this, 'handleViewFormAfter']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Media',
             'view.edit.form.after',
             [$this, 'handleViewFormAfter']
         );
