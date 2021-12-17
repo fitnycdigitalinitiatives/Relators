@@ -250,7 +250,7 @@ class Module extends AbstractModule
                                     array_push($relatorList, $simpleRelators[$uri][0]["@value"]);
                                 }
                                 if ($relatorList) {
-                                    $relatorString = '&nbsp;(' . implode(", ", $relatorList) . ')';
+                                    $relatorString = ' (' . implode(", ", $relatorList) . ')';
                                 }
                                 // case with no link tags
                                 if (strpos($html, "<a") === false) {
