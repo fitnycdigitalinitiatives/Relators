@@ -13,8 +13,8 @@ class RelatorsRepresentation extends AbstractEntityRepresentation
     public function getJsonLd()
     {
         return [
-            'o:resource' => $this->resource()->getReference(),
-            'o:property' => $this->property()->getReference(),
+            'o:resource' => $this->resource() ? $this->resource()->getReference() : null,
+            'o:property' => $this->property() ? $this->property()->getReference() : null,
             'o-module-relators:values' => $this->values(),
             'o-module-relators:valueMatch' => $this->valueMatch(),
             'o-module-relators:uriMatch' => $this->uriMatch(),
